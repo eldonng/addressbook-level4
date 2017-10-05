@@ -76,9 +76,8 @@ public class UiManager extends ComponentManager implements Ui {
     }
 
     private AddCommandWindow createAddWindow(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(MainApp.class.getResource("addwindow.fxml"));
-        AnchorPane page = (AnchorPane) loader.load();
+        FXMLLoader loader = new FXMLLoader(MainApp.class.getResource("/view/AddWindow.fxml"));
+        AnchorPane page = loader.load();
 
         // Create the dialog Stage.
         Stage dialogStage = new Stage();

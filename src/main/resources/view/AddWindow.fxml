@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="275.0" prefWidth="600.0" styleClass="text-area" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.addressbook.ui.AddCommandWindow">
+<AnchorPane prefHeight="275.0" prefWidth="600.0" styleClass="text-area" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.address.ui.AddCommandWindow">
    <children>
       <GridPane layoutX="53.0" layoutY="29.0" prefHeight="150.0" prefWidth="395.0" styleClass="text-field" stylesheets="@DarkTheme.css" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0">
         <columnConstraints>
