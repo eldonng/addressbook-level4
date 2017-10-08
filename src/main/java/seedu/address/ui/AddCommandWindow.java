@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddCommandParser;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
@@ -21,6 +22,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AddCommandWindow {
+
+    private final static String ADD_WINDOW_TITLE = "Add Person";
+    private final static String ADD_SUCCESS_HEADER = "Add Successful";
+    private final static String ADD_SUCCESS_MESSAGE = "Person added Successfully";
+    private final static String ADD_FAILED = "Add Unsuccessful";
+    private final static String ADD_ERROR_MESSAGE = "An unexpected error has occurred. Please try again.";
 
     @FXML
     private TextField nameField;
@@ -105,15 +112,7 @@ public class AddCommandWindow {
                 AddCommand adder = new AddCommand(newPerson);
                 CommandResult result = logic.execute(adder);
 
-                if(result.feedbackToUser.equals(AddCommand.MESSAGE_DUPLICATE_PERSON)) {
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.getDialogPane().setMinSize(200, 175);
-                    alert.setTitle("AddressBook Add Command");
-                    alert.setHeaderText("Add Unsuccessful");
-                    alert.setContentText(result.feedbackToUser);
-                    alert.showAndWait();
-
-                } else if(result.feedbackToUser.equals(String.format(AddCommand.MESSAGE_SUCCESS, newPerson))) {
+                if (result.feedbackToUser.equals(String.format(AddCommand.MESSAGE_SUCCESS, newPerson))) {
                     Alert alert = new Alert(AlertType.INFORMATION);
                     alert.getDialogPane().setMinSize(200, 175);
                     alert.setTitle("AddressBook Add Command");
@@ -139,11 +138,20 @@ public class AddCommandWindow {
         } catch (UniqueTagList.DuplicateTagException dte) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.getDialogPane().setMinSize(200, 175);
-            alert.setTitle("AddressBook Add Command");
+            alert.setTitle(ADD_WINDOW_TITLE);
             alert.setHeaderText("Error");
             alert.setContentText("Duplicate Tags found. Remove Duplicate Tags and try again.");
 
             alert.showAndWait();
+        } catch (CommandException ce) {
+            if(ce.getMessage().equals(AddCommand.MESSAGE_DUPLICATE_PERSON)) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.getDialogPane().setMinSize(200, 175);
+                alert.setTitle(ADD_WINDOW_TITLE);
+                alert.setHeaderText(ADD_FAILED);
+                alert.setContentText(ce.getMessage());
+                alert.showAndWait();
+            }
         }
 
     }
