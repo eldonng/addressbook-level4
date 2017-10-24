@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.web.WebView?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1">
-  <WebView fx:id="browser"/>
+<StackPane stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="450.0" prefWidth="600.0" styleClass="background" stylesheets="@DarkTheme.css">
+         <children>
+            <GridPane layoutX="159.0" layoutY="187.0" prefHeight="232.0" prefWidth="405.0" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="159.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="233.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="0.0" prefWidth="281.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="48.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label styleClass="label-bright" stylesheets="@DarkTheme.css" text="Name:" />
+                  <Label styleClass="label-bright" stylesheets="@DarkTheme.css" text="Phone:" GridPane.rowIndex="1" />
+                  <Label styleClass="label-bright" text="Email:" GridPane.rowIndex="2" />
+                  <Label styleClass="label-bright" text="Address:" GridPane.rowIndex="3" />
+                  <Label styleClass="label-bright" text="Birthday:" GridPane.rowIndex="4" />
+                  <Label styleClass="label-bright" text="Tags:" GridPane.rowIndex="5" />
+                  <Label fx:id="name" styleClass="label-bright" text="\$name" GridPane.columnIndex="1" />
+                  <Label fx:id="phone" styleClass="label-bright" text="\$phone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="email" styleClass="label-bright" text="\$email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="address" styleClass="label-bright" text="\$address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label styleClass="label-bright" text="TBD" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <FlowPane fx:id="tags" columnHalignment="CENTER" rowValignment="BOTTOM" stylesheets="@DarkTheme.css" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+            <Circle fill="DODGERBLUE" layoutX="328.0" layoutY="94.0" radius="75.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="253.0" AnchorPane.topAnchor="19.0" />
+            <Text fx:id="initials" fill="WHITE" layoutX="289.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="menu" text="\$" textAlignment="CENTER" wrappingWidth="60.000001452863216" AnchorPane.leftAnchor="289.0" AnchorPane.rightAnchor="329.9999985471368" AnchorPane.topAnchor="23.0">
+               <font>
+                  <Font size="93.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
 </StackPane>
