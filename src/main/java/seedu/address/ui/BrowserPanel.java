@@ -1,20 +1,18 @@
 package seedu.address.ui;
 
-import java.net.URL;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebView;
-import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -29,28 +27,51 @@ public class BrowserPanel extends UiPart<Region> {
 
     private static final String FXML = "BrowserPanel.fxml";
 
+    private static final Color[] colors = {Color.BLUE, Color.BROWN, Color.GREEN, Color.RED, Color.YELLOW, Color.PURPLE,
+        Color.ORANGE, Color.CHOCOLATE, Color.AQUAMARINE, Color.INDIGO, Color.GRAY};
+
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
     @FXML
+    private Circle circle;
+    @FXML
     private Label name;
+    @FXML
+    private Label nameHeader;
     @FXML
     private Label phone;
     @FXML
+    private Label phoneHeader;
+    @FXML
     private Label email;
     @FXML
+    private Label emailHeader;
+    @FXML
     private Label address;
+    @FXML
+    private Label addressHeader;
+    @FXML
+    private Label birthdayHeader;
+    @FXML
+    private Label birthday;
     @FXML
     private Text initials;
     @FXML
     private FlowPane tags;
+    @FXML
+    private Label tagsHeader;
 
 
     public BrowserPanel() {
         super(FXML);
-
+        loadDefaultPage();
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
         registerAsAnEventHandler(this);
+    }
+
+    private void loadDefaultPage() {
+        circle.setRadius(0);
     }
 
     private void loadPersonPage(ReadOnlyPerson person) {
@@ -58,15 +79,32 @@ public class BrowserPanel extends UiPart<Region> {
     }
 
 
+    /**
+     * Loads the contact information of the specific person
+     * @param person
+     */
     public void loadPage(ReadOnlyPerson person) {
-        initials.setText(person.getName().fullName.substring(0,1));
+        circle.setRadius(75);
+        initials.setText(person.getName().fullName.substring(0, 1));
+        circle.setFill(colors[initials.getText().hashCode() % colors.length]);
+        nameHeader.setText("Name:");
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
-        phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
-        address.textProperty().bind(Bindings.convert(person.addressProperty()));
+        phoneHeader.setText("Phone:");
+        emailHeader.setText("Email:");
         email.textProperty().bind(Bindings.convert(person.emailProperty()));
+        phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
+        addressHeader.setText("Address:");
+        address.textProperty().bind(Bindings.convert(person.addressProperty()));
+        birthdayHeader.setText("Birthday: ");
+        birthday.setText("TBD");
+        tagsHeader.setText("Tags:");
         initTags(person);
     }
 
+    /**
+     * Initializes tags for the person
+     * @param person
+     */
     private void initTags(ReadOnlyPerson person) {
         tags.getChildren().clear();
         person.getTags().forEach(tag -> {
@@ -85,7 +123,7 @@ public class BrowserPanel extends UiPart<Region> {
     }
 
     public void freeResources() {
-
+        loadDefaultPage();
     }
 
 
