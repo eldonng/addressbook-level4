@@ -97,4 +97,6 @@ public interface Model {
     void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate);
 
     void sort(String sortType) throws DuplicatePersonException;
+
+    Predicate<ReadOnlyPerson> getPredicateForTags(String tag) throws IllegalValueException;
 }

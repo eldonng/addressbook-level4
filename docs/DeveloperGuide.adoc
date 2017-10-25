@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= Circles - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -186,7 +186,7 @@ _Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Comma
 
 === Model component
 
-image::ModelClassDiagram.png[width="800"]
+image::ModelClassDiagramupdated.png[width="800"]
 _Figure 2.4.1 : Structure of the Model Component_
 
 *API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
@@ -344,6 +344,52 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Pros:** We do not need to maintain a separate stack, and just reuse what is already in the codebase. +
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
+
+=== Enhanced Find Command
+
+The enhanced `find` command now allows searches for a Person's Name, Phone Number, Email, Address and Tags. It uses the
+`PersonContainsKeywordsPredicate` to search for the keywords in the address book. It also allows users to search for a person even when they search with an incomplete name (e.g: `find lex` will return Alex).
+
+To search whether a person contains the specific keywords, `PersonContainsKeywordsPredicate` will run 2 boolean methods:
+
+. First, it will call `getSearchText` from the `ReadOnlyPerson` class, which will return a String, and searches the String for the requested keyword. +
+. Second, it will get the Person's name by using `getName` method from `ReadOnlyPerson`, and check if the name contains the requested keyword by using `contains(CharSequence keyword)`.
+
+The `getSearchText` method inside the `ReadOnlyPerson` class will convert all the Name, Phone Number, Email, Address and Tags into a String, that can be used to search for the person.
+
+==== Design Considerations
+*Aspect:* Search conditions for `Person` +
+*Alternative 1 (current choice):* Search CharSequence in person's name, and full word in all other fields +
+*Pros:* By checking CharSequence only in name, and not on others, usage such as `find a` will not just show everyone that has `a` in their contact information. +
+*Cons:* Typing partial email, phone number, address and tag will not show the any result. +
+
+*Alternative 2:* Search CharSequence for all fields inside a `Person`. +
+*Pros:* Partial search words will show results for any fields in contact information +
+*Cons:* Usage such as `find a` will search for everything that contains `a` in a person's contact information, which is not useful for the user.
+
+=== Sort
+
+The `sort` command now allows for the list of contacts to be sorted via phone number, name, or email in lexicographic order.
+It uses the `sorted()` method included in `ObservableList.java`, with comparators defined by the developer.
+
+. To begin a sort, `SortCommand` will call `model.sort()` with a String parameter. This parameter defines how the list will be sorted,
+and can be one of 3 options, "name", "phone" or "email".
+
+. Next, a comparator will be chosen and passed into the `sorted()` method based on the parameter passed from the `Command`.
+
+. A sorted list will be returned and displayed.
+
+==== Design Considerations
+*Aspect:* Order of sort +
+*Alternative 1 (current choice):* `ObservableList` 's `sorted()` method +
+*Pros:* Easy to implement, relatively modular +
+*Cons:* Dependant on Java API, future changes to the method could affect the implementation
+
+*Alternative 2:* Override methods with own implementations +
+*Pros:* Less dependant on provided resources, more flexible with product's requirements +
+*Cons:* Resource-intensive
+
+<<<
 
 === Logging
 
@@ -809,7 +855,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 1.  User requests to list persons
 2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
+3.  User requests to delete a specific person or multiple people in the list
 4.  AddressBook deletes the person
 +
 Use case ends.
@@ -828,7 +874,8 @@ Use case ends.
 +
 Use case resumes at step 2.
 
-*Sorting*
+[discrete]
+=== Use case: Sorting
 
 1. Input 'sort <type>', replace <type> with fields (mentioned in step 2) to sort by
 * a. 'name' to sort alphabetically by name
@@ -838,7 +885,8 @@ Use case resumes at step 2.
 
 Use case ends.
 
-*Pin*
+[discrete]
+=== Use case: Pin
 
 1. User finds a specific person
 2. AddressBook displays the person's details
@@ -847,7 +895,8 @@ Use case ends.
 
 Use case ends.
 
-*Listing by [tag]*
+[discrete]
+=== Use case: Listing by [tag]
 
 1. User inputs 'list [tag]' where [tag] is any user-specified tag
 2. AddressBook filters out all persons without [tag]
@@ -855,7 +904,8 @@ Use case ends.
 
 Use case ends.
 
-*Exporting AddressBook data*
+[discrete]
+=== Use case: Exporting AddressBook data
 
 1. User inputs 'export'
 2. AddressBook prompts User to select a location on terminal to save the data file
@@ -864,7 +914,8 @@ Use case ends.
 
 Use case ends.
 
-*Importing AddressBook data*
+[discrete]
+=== Use case: Importing AddressBook data
 
 1. User inputs 'import [location]', where [location] is the location of the data file
 * example: C:/User/Documents/myAddressBook
@@ -932,16 +983,16 @@ A user interface (UI) is a platform which a user interacts with an application
 [appendix]
 == Product Survey
 
-*Product Name*
+*Circles*
 
-Author: ...
+Authors: Eldon Ng, Emil Koh, Mavis Toh
 
 Pros:
 
-* ...
-* ...
+* Helps user get used to the CLI environment and constraints while providing a comfortable UI
+* Stores and organises contacts to help user keep track of his/her social networks
 
 Cons:
 
-* ...
-* ...
+* purely CLI interface, usage has a learning curve
+* aesthetics still a work in progress
